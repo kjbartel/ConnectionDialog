@@ -1,4 +1,4 @@
-Microsoft Visual Studio Connection Dialog
+﻿Microsoft Visual Studio Connection Dialog
 =========================================
 This is the Visual Studio connection dialog originally released by Microsoft but no longer available on their website.
 
@@ -10,5 +10,4 @@ https://web.archive.org/web/20100216143342/http://code.msdn.microsoft.com/Connec
 If all you need is the prebuilt dialog then use nuget:
 https://www.nuget.org/packages/DataConnectionDialog/
 
-This copy was obtained from:
-https://github.com/utsavberi/IDCardManagement-Designer/tree/master/IDCardManagement/ConnectionDialog
+This source is also available in the "Tools" directory of the nuget package. The project files of the source here have been updated so that they may be built in Visual Studio 2013.

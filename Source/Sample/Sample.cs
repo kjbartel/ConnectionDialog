@@ -12,6 +12,8 @@ using System.Text;
 using System.Windows.Forms;
 
 using Microsoft.Data.ConnectionUI;
+using System.Data.Common;
+using System.Data;
 
 namespace Sample
 {
@@ -27,21 +29,38 @@ namespace Sample
 
 			if (DataConnectionDialog.Show(dcd) == DialogResult.OK)
 			{
+                DbProviderFactory factory = DbProviderFactories.GetFactory(dcd.SelectedDataProvider.Name);
+                using (var connection = factory.CreateConnection())
+                {
+                    connection.ConnectionString = dcd.ConnectionString;
+                    connection.Open();
+                    var command = connection.CreateCommand();
+                    command.CommandType = CommandType.Text;
+                    command.CommandText = "SELECT * FROM INFORMATION_SCHEMA.TABLES";
+                    using (var reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            Console.WriteLine(reader["name"]);
+                        }
+                    }
+                }
+
 				// load tables
-				using (SqlConnection connection = new SqlConnection(dcd.ConnectionString))
-				{
-					connection.Open();
-					SqlCommand cmd = new SqlCommand("SELECT * FROM sys.Tables", connection);
+                //using (SqlConnection connection = new SqlConnection(dcd.ConnectionString))
+                //{
+                //    connection.Open();
+                //    SqlCommand cmd = new SqlCommand("SELECT * FROM sys.Tables", connection);
 
-					using (SqlDataReader reader = cmd.ExecuteReader())
-					{
-						while (reader.Read())
-						{
-							Console.WriteLine(reader.HasRows);
-						}
-					}
+                //    using (SqlDataReader reader = cmd.ExecuteReader())
+                //    {
+                //        while (reader.Read())
+                //        {
+                //            Console.WriteLine(reader.HasRows);
+                //        }
+                //    }
 
-				}
+                //}
 			}
 
 			dcs.SaveConfiguration(dcd);
